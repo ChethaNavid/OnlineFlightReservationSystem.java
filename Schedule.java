@@ -1,19 +1,21 @@
 import java.util.Date;
 import java.util.Scanner;
 
-public class Schedule {
-    private String fromWhere;
-    private String toWhere;
+public class Schedule implements Schedulable{
+    private int flightNumber;
+    private String airlineName;
+    private String source;
+    private String destination;
     private String durationTime;
     private Date date;
-    private String time;
-    private String airlineName;
+    private String departureTime;
+    
 
     private void checkFlightDetails( String date) {
         if (date.equals("10/01/2026")) {
             System.out.println("Flight Details");
-            System.out.println("From: " + fromWhere);
-            System.out.println("To: " + toWhere);
+            System.out.println("From: " + source);
+            System.out.println("To: " + destination);
             System.out.println("Duration: " + durationTime);
             System.out.println("Date: " + date);
             System.out.println("Time: " + time);
@@ -24,9 +26,27 @@ public class Schedule {
         
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        // TODO Auto-generated method stub
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString();
+    }
+
+    @Override
+    public void displaySchedule() {
+        // TODO Auto-generated method stub
+        
+    }
+
     private void setFlightDetails(String from, String to, String duration, String date, String Time, String airline) {
-            this.fromWhere = from;
-            this.toWhere = to;
+            this.source = from;
+            this.destination = to;
             this.durationTime = duration;
             this.date = date;
             this.time = Time;
@@ -36,20 +56,20 @@ public class Schedule {
     public Schedule(String airlineName) {
         this.airlineName = airlineName;
     }
-    public String getFromWhere() {
-        return fromWhere;
+    public String getsource() {
+        return source;
     }
 
-    public void setFromWhere(String fromWhere) {
-        this.fromWhere = fromWhere;
+    public void setsource(String source) {
+        this.source = source;
     }
 
-    public String getToWhere() {
-        return toWhere;
+    public String getdestination() {
+        return destination;
     }
 
-    public void setToWhere(String toWhere) {
-        this.toWhere = toWhere;
+    public void setdestination(String destination) {
+        this.destination = destination;
     }
 
     public Date getDate() {
