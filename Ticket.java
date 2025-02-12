@@ -1,4 +1,4 @@
-public class Ticket {
+public class Ticket extends Reservation{
     String passengerId;
     String paymentId;
     String airplaneCode;//"AB123"
@@ -25,11 +25,11 @@ public class Ticket {
         totalTickets++;
     }
 
-    void newTicket(){
+    public void newTicket(){
         System.out.println("New ticket created successfully.");
     }
 
-    void deleteTicket(){
+    public void deleteTicket(){
         System.out.println("Ticket deleted successfully.");
     }
 
