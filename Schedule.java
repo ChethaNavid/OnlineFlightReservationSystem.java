@@ -1,11 +1,11 @@
+import java.util.Date;
 import java.util.Scanner;
 
 public class Schedule {
-    private Scanner input = new Scanner(System.in);
     private String fromWhere;
     private String toWhere;
     private String durationTime;
-    private String date;
+    private Date date;
     private String time;
     private String airlineName;
 
@@ -33,11 +33,31 @@ public class Schedule {
             this.airlineName = airline;
     }
 
-    public static void main(String[] args) {
-       Direction Direction1 = new Direction();
-    }
-
     public Schedule(String airlineName) {
         this.airlineName = airlineName;
     }
+    public String getFromWhere() {
+        return fromWhere;
+    }
+
+    public void setFromWhere(String fromWhere) {
+        this.fromWhere = fromWhere;
+    }
+
+    public String getToWhere() {
+        return toWhere;
+    }
+
+    public void setToWhere(String toWhere) {
+        this.toWhere = toWhere;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }
