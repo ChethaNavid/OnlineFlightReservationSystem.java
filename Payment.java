@@ -1,7 +1,3 @@
-// --- Displayable Interface ---
-interface Displayable {
-    void display();
-}
 
 // --- Payment Class ---
 public class Payment extends Reservation implements Payable, Displayable {
@@ -41,7 +37,7 @@ public class Payment extends Reservation implements Payable, Displayable {
     }
 
     @Override
-    public void display() {
+    public void displayPayment() {
         System.out.println(this.toString());
     }
 
