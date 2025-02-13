@@ -1,6 +1,6 @@
 
 // --- Payment Class ---
-public class Payment extends Reservation implements Payable, Displayable {
+public class Payment extends Flight implements Payable{
     private String paymentId;
     private String userId;
     private String reservationId;
@@ -77,7 +77,7 @@ public class Payment extends Reservation implements Payable, Displayable {
 
     public void displayIfUserIdMatches(String inputUserId) {
         if (this.userId.equals(inputUserId)) {
-            display();
+            displayPayment();
         }
     }
 }
