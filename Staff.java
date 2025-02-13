@@ -1,24 +1,27 @@
 import java.util.Scanner;
 
-public class Stuff implements IStuff {
-    private String id;
-    private String name;
-    private String username;
-    private String password;
+public class Staff implements IStaff {
+    private String stuffId;
+    private String stuffName;
+    private String passWord;
+    private String position;
 
-    public Stuff(String id, String name, String username, String password) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.password = password;
+    public Staff(String id, String name, String password) {
+        this.stuffId = id;
+        this.stuffName = name;
+        this.passWord = password;
     }
 
     public String getId() {
-        return id;
+        return stuffId;
     }
 
     public String getName() {
-        return name;
+        return stuffName;
+    }
+
+    public String getPosition(){
+        return position;
     }
 
     @Override
@@ -29,8 +32,8 @@ public class Stuff implements IStuff {
             System.out.print("Enter password: ");
             String enteredPassword = scanner.nextLine();
 
-            if (this.username.equals(enteredUsername) && this.password.equals(enteredPassword)) {
-                System.out.println("Login successful! Welcome, " + name);
+            if (this.stuffName.equals(enteredUsername) && this.passWord.equals(enteredPassword)) {
+                System.out.println("Login successful! Welcome, " + stuffName);
                 return true;
             } else {
                 System.out.println("Login failed! Incorrect username or password.");
