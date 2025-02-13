@@ -66,6 +66,10 @@ public class Ticket extends Reservation {
         return airlineName; 
     }
 
+    public int getTicketId() { 
+        return ticketId; 
+    }
+
     public static ArrayList<Ticket> getTicketList() { 
         return ticketList; 
     }
@@ -124,10 +128,6 @@ public class Ticket extends Reservation {
         if (ticketId != other.ticketId)
             return false;
         return true;
-    }
-
-    public int getTicketId() { 
-        return ticketId; 
     }
 
     public void newTicket(){
