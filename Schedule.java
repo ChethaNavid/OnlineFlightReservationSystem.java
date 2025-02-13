@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Schedule implements Schedulable {
@@ -8,11 +9,14 @@ public class Schedule implements Schedulable {
     private String durationTime;
     private Date date;
     private String departureTime;
+    private ArrayList<Schedule> schedules = new ArrayList<>();
 
     // Constructor
     public Schedule(String airlineName) {
         this.airlineName = airlineName;
     }
+
+    public Schedule(){}
 
     // Method to check if a flight exists between given source and destination
     public void checkFlightDetails(String from, String to) {
