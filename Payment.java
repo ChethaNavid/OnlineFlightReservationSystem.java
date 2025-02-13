@@ -1,5 +1,10 @@
+// --- Displayable Interface ---
+interface Displayable {
+    void display();
+}
+
 // --- Payment Class ---
-public class Payment extends Reservation implements Payable{
+public class Payment extends Reservation implements Payable, Displayable {
     private String paymentId;
     private String userId;
     private String reservationId;
@@ -9,20 +14,35 @@ public class Payment extends Reservation implements Payable{
 
     @Override
     public boolean equals(Object compared) {
-        // TODO Auto-generated method stub
-        return true;
+        if (this == compared) return true;
+        if (compared == null || getClass() != compared.getClass()) return false;
+        Payment payment = (Payment) compared;
+        return paymentId.equals(payment.paymentId);
     }
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return "";
+        return "Payment ID: " + paymentId + 
+               "\nUser ID: " + userId + 
+               "\nReservation ID: " + reservationId + 
+               "\nAmount: $" + amount + 
+               "\nPayment Date: " + paymentDate + 
+               "\nPayment Status: " + paymentStatus;
     }
 
     @Override
     public void processPayment() {
-        // TODO Auto-generated method stub
-        
+        if (paymentStatus.equalsIgnoreCase("Pending")) {
+            paymentStatus = "Completed";
+            System.out.println("Payment processed successfully.");
+        } else {
+            System.out.println("Payment is already " + paymentStatus + ".");
+        }
+    }
+
+    @Override
+    public void display() {
+        System.out.println(this.toString());
     }
 
     public Payment(String paymentId, String userId, String reservationId,
@@ -57,5 +77,11 @@ public class Payment extends Reservation implements Payable{
 
     public String getPaymentStatus() {
         return paymentStatus;
+    }
+
+    public void displayIfUserIdMatches(String inputUserId) {
+        if (this.userId.equals(inputUserId)) {
+            display();
+        }
     }
 }
