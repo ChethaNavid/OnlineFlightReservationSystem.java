@@ -1,11 +1,29 @@
 // --- Payment Class ---
-class Payment {
+public class Payment extends Reservation implements Payable{
     private String paymentId;
     private String userId;
     private String reservationId;
     private double amount;
     private String paymentDate;
     private String paymentStatus;
+
+    @Override
+    public boolean equals(Object compared) {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return "";
+    }
+
+    @Override
+    public void processPayment() {
+        // TODO Auto-generated method stub
+        
+    }
 
     public Payment(String paymentId, String userId, String reservationId,
                    double amount, String paymentDate, String paymentStatus) {

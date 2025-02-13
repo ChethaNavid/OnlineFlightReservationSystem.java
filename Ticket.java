@@ -1,14 +1,14 @@
-public class Ticket {
-    private String passengerId;
-    private String paymentId;
-    private String airplaneCode;//"AB123"
-    private String dateOfJourney; //YYYY-MM-DD
-    private int seatNum; //can justify plane Class
-    private String destination ;
-    private String source;
-    private String dateOfBuyingTicket;
-    private String airlineName;
-    private int ticketId;
+public class Ticket extends Reservation{
+    String passengerId;
+    String paymentId;
+    String airplaneCode;//"AB123"
+    String dateOfJourney; //YYYY-MM-DD
+    int seatNum; //can justify plane Class
+    String destination ;
+    String source;
+    String dateOfBuyingTicket;
+    String airlineName;
+    String ticketId;//
 
     private static int totalTickets = 0;
 
@@ -66,11 +66,11 @@ public class Ticket {
         return ticketId; 
     }
 
-    void newTicket(){
-        System.out.println("New ticket created successfully. Ticket ID: " + ticketId);
+    public void newTicket(){
+        System.out.println("New ticket created successfully.");
     }
 
-    void deleteTicket(){
+    public void deleteTicket(){
         System.out.println("Ticket deleted successfully.");
     }
 
