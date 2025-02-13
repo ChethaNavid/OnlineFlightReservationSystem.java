@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Reservation implements SystemManagement{
+public class Flight implements SystemManagement{
     private int flightNum;
     private int bookCount; // track the number of booked seat
     static int totalSeats = 60;
@@ -9,11 +9,11 @@ public class Reservation implements SystemManagement{
     private int amount;
     private int seatNumber;
 
-    public Reservation() {
+    public Flight() {
 
     }
 
-    public Reservation(int flightNum, int seatNumber) {
+    public Flight(int flightNum, int seatNumber) {
         this.flightNum = flightNum;
         this.bookCount = 0;
         this.amount = 0;
@@ -45,7 +45,7 @@ public class Reservation implements SystemManagement{
 
     @Override
     public boolean equals(Object compared){
-        Reservation comparedFlight = (Reservation)compared;
+        Flight comparedFlight = (Flight)compared;
 
         return this.flightNum == comparedFlight.flightNum && this.seatNumber == comparedFlight.seatNumber;
 
