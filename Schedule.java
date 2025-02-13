@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.Date;
 
+interface Schedulable {
+    void displaySchedule();
+}
+
 public class Schedule implements Schedulable {
     private int flightNumber;
     private String airlineName;
