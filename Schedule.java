@@ -1,7 +1,10 @@
 import java.util.Date;
-import java.util.Scanner;
 
-public class Schedule implements Schedulable{
+interface Schedulable {
+    void displaySchedule();
+}
+
+public class Schedule implements Schedulable {
     private int flightNumber;
     private String airlineName;
     private String source;
@@ -9,66 +12,64 @@ public class Schedule implements Schedulable{
     private String durationTime;
     private Date date;
     private String departureTime;
-    
 
-    private void checkFlightDetails( String date) {
-        if (date.equals("10/01/2026")) {
-            System.out.println("Flight Details");
-            System.out.println("From: " + source);
-            System.out.println("To: " + destination);
-            System.out.println("Duration: " + durationTime);
-            System.out.println("Date: " + date);
-            System.out.println("Time: " + time);
-            System.out.println("Airline: " + airlineName);
-        } else {
-            System.out.println("No flight available on this date.");
-        }
-        
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
-        return super.equals(obj);
-    }
-
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
-    }
-
-    @Override
-    public void displaySchedule() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    private void setFlightDetails(String from, String to, String duration, String date, String Time, String airline) {
-            this.source = from;
-            this.destination = to;
-            this.durationTime = duration;
-            this.date = date;
-            this.time = Time;
-            this.airlineName = airline;
-    }
-
+    // Constructor
     public Schedule(String airlineName) {
         this.airlineName = airlineName;
     }
-    public String getsource() {
+
+    // Method to check if a flight exists between given source and destination
+    public void checkFlightDetails(String from, String to) {
+        if (from.equalsIgnoreCase(source) && to.equalsIgnoreCase(destination)) {
+            displaySchedule();
+        } else {
+            System.out.println("No flight available from " + from + " to " + to);
+        }
+    }
+
+    // Method to set flight details
+    public void setFlightDetails(String from, String to, String duration, Date date, String time, String airline) {
+        this.source = from;
+        this.destination = to;
+        this.durationTime = duration;
+        this.date = date;
+        this.departureTime = time;
+        this.airlineName = airline;
+    }
+
+    // Override toString() to display flight details
+    @Override
+    public String toString() {
+        return "Flight Details:\n" +
+                "Flight Number: " + flightNumber + "\n" +
+                "Airline: " + airlineName + "\n" +
+                "From: " + source + "\n" +
+                "To: " + destination + "\n" +
+                "Duration: " + durationTime + "\n" +
+                "Date: " + date + "\n" +
+                "Time: " + departureTime;
+    }
+
+    // Implement displaySchedule() from Schedulable
+    @Override
+    public void displaySchedule() {
+        System.out.println(toString());
+    }
+
+    // Getters and Setters
+    public String getSource() {
         return source;
     }
 
-    public void setsource(String source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
-    public String getdestination() {
+    public String getDestination() {
         return destination;
     }
 
-    public void setdestination(String destination) {
+    public void setDestination(String destination) {
         this.destination = destination;
     }
 
@@ -79,5 +80,4 @@ public class Schedule implements Schedulable{
     public void setDate(Date date) {
         this.date = date;
     }
-
 }
