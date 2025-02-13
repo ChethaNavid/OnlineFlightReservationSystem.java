@@ -1,4 +1,4 @@
 public interface SystemManagement {
-    public void bookTicket();
-    public void cancelTicket(); 
+    public void bookSeat();
+    public void cancelSeat(); 
 }
