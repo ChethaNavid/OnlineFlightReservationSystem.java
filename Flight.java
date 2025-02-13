@@ -1,17 +1,18 @@
 import java.util.ArrayList;
 
-public class Reservation implements SystemManagement{
+public class Flight implements SystemManagement{
     private int flightNum;
     private int bookCount; // track the number of booked seat
     private int totalSeats = 60;
     private ArrayList<Passenger> passengers; // Stores passengers in their assigned seats
+    private Schedule schedules;
     private ArrayList<Boolean>seatIsReserved; // track the booking seat if seat != null return true
     private double amount;
     private int seatNumber;
 
-    public Reservation() {}
+    public Flight() {}
 
-    public Reservation(int flightNum, int seatNumber) {
+    public Flight(int flightNum, int seatNumber) {
         this.flightNum = flightNum;
         this.seatNumber = seatNumber;
         this.passengers = new ArrayList<Passenger>();
@@ -44,7 +45,7 @@ public class Reservation implements SystemManagement{
 
     @Override
     public boolean equals(Object compared){
-        Reservation comparedFlight = (Reservation)compared;
+        Flight comparedFlight = (Flight)compared;
 
         return this.flightNum == comparedFlight.flightNum && this.seatNumber == comparedFlight.seatNumber;
 
