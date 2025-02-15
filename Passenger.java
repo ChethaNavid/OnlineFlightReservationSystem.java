@@ -1,20 +1,13 @@
 
 public class Passenger extends User{
     static int totalPassenger = 0;
-    private int id;
-    private String name;
-    private String sex;
-    private String phoneNum;
+    private int passengerID;
     private String passportNum;
-    private String email;
 
-    public Passenger(String name, String sex, String phoneNum, String passportNum, String email) {
-        this.id = ++totalPassenger;
-        this.name = name;
-        this.sex = sex;
-        this.phoneNum = phoneNum;
+    public Passenger(String name, String sex, String phoneNum, String passportNum, String email, String password) {
+        super(name, sex, phoneNum, email, password);
+        this.passengerID = ++totalPassenger;
         this.passportNum = passportNum;
-        this.email = email;
     }
 
     public Passenger(String passportNum) {
@@ -22,15 +15,7 @@ public class Passenger extends User{
     }
 
     public int getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getPhoneNumber() {
-        return this.phoneNum;
+        return this.passengerID;
     }
 
     public String getPassportNum() {
@@ -47,6 +32,18 @@ public class Passenger extends User{
 
     @Override
     public String toString() {
-        return String.valueOf(this.id) + ". " + this.name + " " + this.sex + " " + this.phoneNum + " " + this.passportNum + this.email;
+        return String.valueOf(this.passengerID) + ". " + this.name + " " + this.sex + " " + this.phone + " " + this.passportNum + this.email;
+    }
+
+    @Override
+    public void login() {
+        // TODO Auto-generated method stub
+        super.login();
+    }
+
+    @Override
+    public void register() {
+        // TODO Auto-generated method stub
+        super.register();
     }
 }
