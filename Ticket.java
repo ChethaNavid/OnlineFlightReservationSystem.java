@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Ticket extends Flight {
+public class Ticket {
     private String passengerId;
     private String paymentId;
     private String airplaneCode;

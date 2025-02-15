@@ -1,14 +1,15 @@
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Schedule implements Schedulable {
+public class Schedule {
+    private String scheduleID;
     private int flightNumber;
     private String airlineName;
     private String source;
     private String destination;
-    private String durationTime;
-    private Date date;
     private String departureTime;
+    private String arrivalTime;
+    private Date date;
     private ArrayList<Schedule> schedules = new ArrayList<>();
 
     // Constructor
@@ -28,30 +29,28 @@ public class Schedule implements Schedulable {
     }
 
     // Method to set flight details
-    public void setFlightDetails(String from, String to, String duration, Date date, String time, String airline) {
+    public void setFlightDetails(String from, String to, String airline, String departureTime, String arrivalTime, Date date) {
         this.source = from;
         this.destination = to;
-        this.durationTime = duration;
-        this.date = date;
-        this.departureTime = time;
         this.airlineName = airline;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.date = date;
     }
 
-    // Override toString() to display flight details
-    @Override
     public String toString() {
         return "Flight Details:\n" +
+                "Schedule ID: " + scheduleID +
                 "Flight Number: " + flightNumber + "\n" +
                 "Airline: " + airlineName + "\n" +
                 "From: " + source + "\n" +
                 "To: " + destination + "\n" +
-                "Duration: " + durationTime + "\n" +
-                "Date: " + date + "\n" +
-                "Time: " + departureTime;
+                "Departure: " + departureTime + "\n" +
+                "Arrival: " + arrivalTime +
+                "Date: " + date + "\n";
+                
     }
 
-    // Implement displaySchedule() from Schedulable
-    @Override
     public void displaySchedule() {
         System.out.println(toString());
     }
