@@ -1,18 +1,13 @@
 import java.util.ArrayList;
 
-public class EconomyClass {
-    protected int flightNum;
+public class EconomyClass extends ClassType {
     private static int bookCount; // track the number of booked seat
     private static int totalSeats = 100;
-    protected ArrayList<Passenger> passengers; // Stores passengers in their assigned seats
-    protected Schedule schedules;
-    protected ArrayList<Boolean>seatIsReserved; // track the booking seat if seat != null return true
-    protected double amount;
-    protected int seatNumber;
+    private int flightNum;
+    private int seatNumber;
 
     public EconomyClass(double amount) {
-        this.flightNum = flightNum;
-        this.seatNumber = seatNumber;
+        this.amount = amount;
         this.passengers = new ArrayList<Passenger>();
         this.seatIsReserved = new ArrayList<Boolean>(); 
 
@@ -21,26 +16,32 @@ public class EconomyClass {
         }
     }
 
+    @Override
     public String seat() {
         return "Limited recline and legroom.";
     }
 
+    @Override
     public String dinning() {
         return "Basic meal and drink, limited selection.";
     }
     
+    @Override
     public String entertainment() {
         return "Personal or shared screens with movies, music, and games.";
     }
 
+    @Override
     public String baggage() {
         return "Limited baggage allowance, additional fees for extra bags.";
     }
 
+    @Override
     public String customerSupport() {
         return "Standard assistance from flight attendants.";
     }
 
+    @Override
     public void display() {
         System.out.println("Seat: " + seat()); 
         System.out.println("Dinning: " + dinning());
