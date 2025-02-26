@@ -1,6 +1,6 @@
 
 // --- Payment Class ---
-public class Payment extends Reservation implements Payable, Displayable {
+public class Payment {
     private String paymentId;
     private String userId;
     private String reservationId;
@@ -26,7 +26,6 @@ public class Payment extends Reservation implements Payable, Displayable {
                "\nPayment Status: " + paymentStatus;
     }
 
-    @Override
     public void processPayment() {
         if (paymentStatus.equalsIgnoreCase("Pending")) {
             paymentStatus = "Completed";
@@ -36,7 +35,6 @@ public class Payment extends Reservation implements Payable, Displayable {
         }
     }
 
-    @Override
     public void displayPayment() {
         System.out.println(this.toString());
     }
@@ -77,7 +75,7 @@ public class Payment extends Reservation implements Payable, Displayable {
 
     public void displayIfUserIdMatches(String inputUserId) {
         if (this.userId.equals(inputUserId)) {
-            display();
+            displayPayment();
         }
     }
 }

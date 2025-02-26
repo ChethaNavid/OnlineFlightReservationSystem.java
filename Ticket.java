@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Ticket extends Reservation {
+public class Ticket {
     private String passengerId;
     private String paymentId;
     private String airplaneCode;
@@ -83,51 +83,7 @@ public class Ticket extends Reservation {
         if (getClass() != obj.getClass())
             return false;
         Ticket other = (Ticket) obj;
-        if (passengerId == null) {
-            if (other.passengerId != null)
-                return false;
-        } else if (!passengerId.equals(other.passengerId))
-            return false;
-        if (paymentId == null) {
-            if (other.paymentId != null)
-                return false;
-        } else if (!paymentId.equals(other.paymentId))
-            return false;
-        if (airplaneCode == null) {
-            if (other.airplaneCode != null)
-                return false;
-        } else if (!airplaneCode.equals(other.airplaneCode))
-            return false;
-        if (dateOfJourney == null) {
-            if (other.dateOfJourney != null)
-                return false;
-        } else if (!dateOfJourney.equals(other.dateOfJourney))
-            return false;
-        if (seatNum != other.seatNum)
-            return false;
-        if (destination == null) {
-            if (other.destination != null)
-                return false;
-        } else if (!destination.equals(other.destination))
-            return false;
-        if (source == null) {
-            if (other.source != null)
-                return false;
-        } else if (!source.equals(other.source))
-            return false;
-        if (dateOfBuyingTicket == null) {
-            if (other.dateOfBuyingTicket != null)
-                return false;
-        } else if (!dateOfBuyingTicket.equals(other.dateOfBuyingTicket))
-            return false;
-        if (airlineName == null) {
-            if (other.airlineName != null)
-                return false;
-        } else if (!airlineName.equals(other.airlineName))
-            return false;
-        if (ticketId != other.ticketId)
-            return false;
-        return true;
+        return ticketId == other.ticketId;
     }
 
     public void newTicket(){
