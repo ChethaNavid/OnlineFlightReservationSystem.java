@@ -1,5 +1,5 @@
 
-public class Passenger {
+public class Passenger implements VipPassenger{
     static int totalPassenger = 0;
     private int id;
     private String name;
