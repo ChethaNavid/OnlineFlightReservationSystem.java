@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class Schedule {
     private String scheduleID;
-    private int flightNumber;
+    private String flightNumber;
     private String airlineName;
     private String source;
     private String destination;
@@ -16,7 +16,7 @@ public class Schedule {
     private static ArrayList<Schedule> schedules = new ArrayList<>();
 
     // Constructor
-    public Schedule(String scheduleID, int flightNumber, String airlineName, String source, String destination, 
+    public Schedule(String scheduleID, String flightNumber, String airlineName, String source, String destination, 
                     String departureTime, String arrivalTime, Date date) {
         this.scheduleID = scheduleID;
         this.flightNumber = flightNumber;
@@ -33,31 +33,45 @@ public class Schedule {
     // ✅ Method to Read from File and Store Schedule
     public static void readSchedulesFromFile() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        try (Scanner scan = new Scanner(Paths.get("AirlineSchedule.csv"))) {
+        try (Scanner scan = new Scanner(Paths.get("AirlineSchedule1.csv"))) {
+            // Skip header row if present
+            if (scan.hasNextLine()) {
+                scan.nextLine(); // Skips the header row
+            }
+
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
                 String[] parts = line.split(",");
-                if (parts.length < 7) continue; // Skip invalid lines
+                if (parts.length < 8) continue; // Skip invalid lines
                 
                 String scheduleID = parts[0];
-                int flightNumber = Integer.parseInt(parts[1]);
+                String flightNumber = parts[1];
                 String airlineName = parts[2];
                 String source = parts[3];
                 String destination = parts[4];
                 String departureTime = parts[5];
                 String arrivalTime = parts[6];
-                Date date = dateFormat.parse(parts[7]); // Convert date string to Date object
+                Date date = null;
+                
+                // Try to parse the date and handle any errors
+                try {
+                    date = dateFormat.parse(parts[7]); // Convert date string to Date object
+                } catch (Exception e) {
+                    System.out.println(line);
+                    continue; // Skip this entry if the date is invalid
+                }
 
                 Schedule schedule = new Schedule(scheduleID, flightNumber, airlineName, source, destination, 
                                                  departureTime, arrivalTime, date);
                 schedules.add(schedule);
-                // Display all schedules in the ArrayList
-                for (Schedule s : schedules) {
-                System.out.println(s);
-                }
             }
         } catch (Exception e) {
             System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        // ✅ Display all schedules after reading the file
+        for (Schedule s : schedules) {
+            System.out.println(s);
         }
     }
 
@@ -120,8 +134,7 @@ public class Schedule {
 
     public static void main(String[] args) {
         readSchedulesFromFile();
-        /* checkFlightsByDate("12-12-2021");
-        checkFlightDetails("Lagos", "Abuja"); */
+        /* checkFlightsByDate("12-12-2021"); // Example usage of checkFlightsByDate
+        checkFlightDetails("Phnom Penh", "Bangkok"); // Example usage of checkFlightDetails */
     }
-
 }
