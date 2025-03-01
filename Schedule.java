@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.nio.file.Paths;
+import java.util.Scanner;
+import java.text.SimpleDateFormat;
 
 public class Schedule {
     private String scheduleID;
@@ -10,71 +13,115 @@ public class Schedule {
     private String departureTime;
     private String arrivalTime;
     private Date date;
-    private ArrayList<Schedule> schedules = new ArrayList<>();
+    private static ArrayList<Schedule> schedules = new ArrayList<>();
 
     // Constructor
-    public Schedule(String airlineName) {
+    public Schedule(String scheduleID, int flightNumber, String airlineName, String source, String destination, 
+                    String departureTime, String arrivalTime, Date date) {
+        this.scheduleID = scheduleID;
+        this.flightNumber = flightNumber;
         this.airlineName = airlineName;
-    }
-
-    public Schedule(){}
-
-    // Method to check if a flight exists between given source and destination
-    public void checkFlightDetails(String from, String to) {
-        if (from.equalsIgnoreCase(source) && to.equalsIgnoreCase(destination)) {
-            System.out.println(" flight(s) available from " + from + " to " + to);
-        } else {
-            System.out.println("No flight available from " + from + " to " + to);
-        }
-    }
-
-    // Method to set flight details
-    public void setFlightDetails(String from, String to, String airline, String departureTime, String arrivalTime, Date date) {
-        this.source = from;
-        this.destination = to;
-        this.airlineName = airline;
+        this.source = source;
+        this.destination = destination;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.date = date;
     }
 
+    public Schedule() {}
+
+    // ✅ Method to Read from File and Store Schedule
+    public static void readSchedulesFromFile() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try (Scanner scan = new Scanner(Paths.get("AirlineSchedule.csv"))) {
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+                String[] parts = line.split(",");
+                if (parts.length < 7) continue; // Skip invalid lines
+                
+                String scheduleID = parts[0];
+                int flightNumber = Integer.parseInt(parts[1]);
+                String airlineName = parts[2];
+                String source = parts[3];
+                String destination = parts[4];
+                String departureTime = parts[5];
+                String arrivalTime = parts[6];
+                Date date = dateFormat.parse(parts[7]); // Convert date string to Date object
+
+                Schedule schedule = new Schedule(scheduleID, flightNumber, airlineName, source, destination, 
+                                                 departureTime, arrivalTime, date);
+                schedules.add(schedule);
+                // Display all schedules in the ArrayList
+                for (Schedule s : schedules) {
+                System.out.println(s);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    // ✅ Check Flights on a Given Date
+    public static void checkFlightsByDate(String dateInput) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date inputDate = dateFormat.parse(dateInput);
+            for (Schedule schedule : schedules) {
+                if (schedule.getDate().equals(inputDate)) {
+                    System.out.println(schedule);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid date format. Use dd-MM-yyyy");
+        }
+    }
+
+    // ✅ Check if Flight Exists Between Two Cities
+    public static void checkFlightDetails(String from, String to) {
+        boolean found = false;
+        for (Schedule schedule : schedules) {
+            if (schedule.getSource().equalsIgnoreCase(from) && schedule.getDestination().equalsIgnoreCase(to)) {
+                System.out.println(schedule);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No flight available from " + from + " to " + to);
+        }
+    }
+
+    // ✅ Override toString() for Display
+    @Override
     public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return "Flight Details:\n" +
-                "Schedule ID: " + scheduleID +
+                "Schedule ID: " + scheduleID + "\n" +
                 "Flight Number: " + flightNumber + "\n" +
                 "Airline: " + airlineName + "\n" +
                 "From: " + source + "\n" +
                 "To: " + destination + "\n" +
                 "Departure: " + departureTime + "\n" +
-                "Arrival: " + arrivalTime +
-                "Date: " + date + "\n";
-                
+                "Arrival: " + arrivalTime + "\n" +
+                "Date: " + dateFormat.format(date) + "\n";
     }
 
-  
-
-    // Getters and Setters
+    // ✅ Getters
     public String getSource() {
         return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
     }
 
     public String getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public static void main(String[] args) {
+        readSchedulesFromFile();
+        /* checkFlightsByDate("12-12-2021");
+        checkFlightDetails("Lagos", "Abuja"); */
     }
+
 }

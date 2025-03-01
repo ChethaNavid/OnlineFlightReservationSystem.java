@@ -4,7 +4,14 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         ArrayList<Passenger> passengers = new ArrayList<>();
+        Schedule schedules = new Schedule();
         Scanner scanner = new Scanner(System.in);
+
+        /* System.out.println("What date you want to filght?");
+        System.out.print("INPUT: ");
+        String date = scanner.nextLine();
+        schedules.checkFlightsByDate(date); */
+        
 
         // while(true) {
         //     System.out.println("Enter your phone number");
@@ -28,7 +35,7 @@ public class Main {
             
         // }
         // scanner.close();
-        EconomyClass economyClass = new EconomyClass(500);
+        /* EconomyClass economyClass = new EconomyClass(500);
         System.out.println("Flying Economy Class, provide you with: ");
         economyClass.display();
         System.out.println("\n");
@@ -38,8 +45,9 @@ public class Main {
         System.out.println("\n");
         System.out.println("Flying First Class, provide you with: ");
         FirstClass firstClass = new FirstClass(1500);
-        firstClass.display();
+        firstClass.display(); */
         
+
 
     }
 }
