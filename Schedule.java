@@ -22,7 +22,7 @@ public class Schedule {
     // Method to check if a flight exists between given source and destination
     public void checkFlightDetails(String from, String to) {
         if (from.equalsIgnoreCase(source) && to.equalsIgnoreCase(destination)) {
-            displaySchedule();
+            System.out.println(" flight(s) available from " + from + " to " + to);
         } else {
             System.out.println("No flight available from " + from + " to " + to);
         }
@@ -51,9 +51,7 @@ public class Schedule {
                 
     }
 
-    public void displaySchedule() {
-        System.out.println(toString());
-    }
+  
 
     // Getters and Setters
     public String getSource() {
