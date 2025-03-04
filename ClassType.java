@@ -5,12 +5,13 @@ public abstract class ClassType {
     protected Schedule schedules;
     protected ArrayList<Boolean>seatIsReserved; // track the booking seat if seat != null return true
     protected double amount;
+    protected int seatNumber;
 
-    public abstract String seat();
+    public abstract String seat(); // If we don't use abstract method, we have to implement the method here
     public abstract String dinning();
     public abstract String entertainment();
     public abstract String baggage();
     public abstract String customerSupport();
-    public abstract void display();
+    public abstract String toString();
     
 }

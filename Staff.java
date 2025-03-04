@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Staff extends User {
-    static int totalStaff = 0;
+    private static int totalStaff = 0;
     private int stuffId;
     private String position;
 
@@ -15,6 +15,14 @@ public class Staff extends User {
         return position;
     }
 
+    public int getID() {
+        return stuffId;
+    }
+
+    public static int getTotalStaff() {
+        return totalStaff;
+    }
+    
     @Override
     public void register() {
         // TODO Auto-generated method stub
