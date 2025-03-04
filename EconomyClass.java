@@ -3,8 +3,6 @@ import java.util.ArrayList;
 public class EconomyClass extends ClassType {
     private static int bookCount; // track the number of booked seat
     private static int totalSeats = 100;
-    private int flightNum;
-    private int seatNumber;
 
     public EconomyClass(double amount) {
         this.amount = amount;
@@ -42,28 +40,26 @@ public class EconomyClass extends ClassType {
     }
 
     @Override
-    public void display() {
-        System.out.println("Seat: " + seat()); 
-        System.out.println("Dinning: " + dinning());
-        System.out.println("Entertianment: " + entertainment());
-        System.out.println("Customer support: " + customerSupport());
-        System.out.println("Baggage: " + baggage());
+    public String toString() {
+        return "Seat: " + seat() + "\n" +
+        "Dinning: " + dinning() + "\n" +
+        "Entertianment: " + entertainment() + "\n" +
+        "Customer support: " + customerSupport() + "\n" +
+        "Baggage: " + baggage() + "\n";
     }
 
     @Override
     public boolean equals(Object compared){
-        EconomyClass comparedFlight = (EconomyClass)compared;
+        if(this == compared) {
+            return true;
+        }
 
-        return this.flightNum == comparedFlight.flightNum && this.seatNumber == comparedFlight.seatNumber;
+        if(!(compared instanceof EconomyClass)) {
+            return false;
+        }
+        EconomyClass economy = (EconomyClass)compared;
 
+        return this.amount == economy.amount && totalSeats == economy.totalSeats;
     }
-
-    @Override
-    public String toString() {
-        return "Flight number: " + this.flightNum + "\nYour seat number: " + this.seatNumber + "\nAmount: " + this.amount;
-    }
-
-
-
 
 }

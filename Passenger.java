@@ -1,6 +1,6 @@
 public class Passenger extends User{
 
-    static int totalPassenger = 0;
+    private static int totalPassenger = 0;
     private int passengerID;
     private String passportNum;
 
@@ -22,6 +22,10 @@ public class Passenger extends User{
         return this.passportNum;
     }
 
+    public static int getTotalPassenger() {
+        return totalPassenger;
+    }
+    
     @Override
     public boolean equals(Object compared){
 

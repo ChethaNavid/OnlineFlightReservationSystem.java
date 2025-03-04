@@ -56,11 +56,25 @@ public class FirstClass extends BusinessClass {
     }
 
     @Override
-    public void display() {
-        super.display();
-        System.out.println("Special Request: " + specialRequest());
+    public String toString() {
+        return super.toString() +
+        "Special Request: " + specialRequest();
     }
 
+    @Override
+    public boolean equals(Object compared) {
+        if(this == compared) { // Check if the compared object is the same instance
+            return true;
+        }
+
+        if(!(compared instanceof FirstClass)) {
+            return false;
+        }
+
+        FirstClass first = (FirstClass)compared;
+
+        return this.amount == first.amount && totalSeats == first.totalSeats;
+    }
 
     public static int getTotalSeats() {
         return totalSeats;

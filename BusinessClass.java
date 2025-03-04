@@ -49,11 +49,26 @@ public class BusinessClass extends EconomyClass {
     }
 
     @Override
-    public void display() {
-        super.display();
-        System.out.println("Check-In: " + checkIn());
-        System.out.println("Lounge: " + lounge());
-    }    
+    public String toString() {
+        return super.toString() +
+        "Check-In: " + checkIn() + "\n" +
+        "Lounge: " + lounge() + "\n";
+    }   
+
+    @Override
+    public boolean equals(Object compared) {
+        if(this == compared) { // Check if the compared object is the same instance
+            return true;
+        }
+
+        if(!(compared instanceof BusinessClass)) {
+            return false;
+        }
+
+        BusinessClass business = (BusinessClass)compared;
+
+        return this.amount == business.amount && totalSeats == business.totalSeats;
+    }   
 
     public static int getTotalSeats() {
         return totalSeats;
