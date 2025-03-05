@@ -2,12 +2,18 @@ import java.util.Scanner;
 
 public class Staff extends User {
     private static int totalStaff = 0;
-    private int stuffId;
+    private int staffID;
     private String position;
 
     public Staff(String name, String sex, String position, String phone, String email, String password) {
         super(name, sex, phone, email, password);
-        this.stuffId = ++totalStaff;
+        this.staffID = ++totalStaff;
+        this.position = position;
+    }
+
+    public Staff(int staffID, String name, String sex, String position, String phone, String email, String password) {
+        super(name, sex, phone, email, password);
+        this.staffID = staffID;
         this.position = position;
     }
 
@@ -16,7 +22,7 @@ public class Staff extends User {
     }
 
     public int getID() {
-        return stuffId;
+        return staffID;
     }
 
     public static int getTotalStaff() {
@@ -31,8 +37,8 @@ public class Staff extends User {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        return "ID:" + String.valueOf(this.staffID) + "," + "Name:" + this.name + "," + "Gender:" + this.sex + "," 
+        + "Phone:" + this.phone + "," + "Email:" + this.email + "," + "Password:" + this.password + "," + "Position:" + this.position;
     }
 
     @Override

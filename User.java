@@ -1,4 +1,4 @@
-public class User implements Authentication {
+public abstract class User implements Authentication {
     protected String name;
     protected String sex;
     protected String phone;
