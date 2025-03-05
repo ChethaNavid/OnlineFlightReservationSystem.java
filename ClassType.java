@@ -7,11 +7,10 @@ public abstract class ClassType {
     protected double amount;
     protected int seatNumber;
 
-    public abstract String seat(); // If we don't use abstract method, we have to implement the method here
-    public abstract String dinning();
-    public abstract String entertainment();
-    public abstract String baggage();
-    public abstract String customerSupport();
-    public abstract String toString();
+    protected abstract String seat(); // If we don't use abstract method, we have to implement the method here
+    protected abstract String dinning();
+    protected abstract String entertainment();
+    protected abstract String baggage();
+    protected abstract String customerSupport();
     
 }

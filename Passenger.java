@@ -10,6 +10,12 @@ public class Passenger extends User{
         this.passportNum = passportNum;
     }
 
+    public Passenger(int passengerID, String name, String sex, String phoneNum, String passportNum, String email, String password) {
+        super(name, sex, phoneNum, email, password);
+        this.passengerID = passengerID;
+        this.passportNum = passportNum;
+    }
+
     public Passenger(String passportNum) {
         this.passportNum = passportNum;
     }
@@ -36,7 +42,8 @@ public class Passenger extends User{
 
     @Override
     public String toString() {
-        return String.valueOf(this.passengerID) + ". " + this.name + " " + this.sex + " " + this.phone + " " + this.passportNum + this.email;
+        return "ID:" + String.valueOf(this.passengerID) + "," + "Name:" + this.name + "," + "Gender:" + this.sex + "," 
+        + "Phone:" + this.phone + "," + "Email:" + this.email + "," + "Password:" + this.password + "," + "Passport:" + this.passportNum;
     }
 
     @Override

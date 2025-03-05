@@ -16,35 +16,35 @@ public class BusinessClass extends EconomyClass {
     }
 
     @Override
-    public String dinning() {
+    protected String dinning() {
         return "Multi-course meals with a variety of choices";
     }
 
     @Override
-    public String entertainment() {
+    protected String entertainment() {
         return "Large screens with a vast selection of movies, TV shows, music, and games.";
     }
 
     @Override
-    public String seat() {
+    protected String seat() {
         return "Transforms into lay flat bed with extra legroom";
     }
 
     @Override
-    public String baggage() {
+    protected String baggage() {
         return "Increased baggage allowance";
     }
 
     @Override
-    public String customerSupport() {
+    protected String customerSupport() {
         return "More attentive and personalized service";
     }
 
-    public String checkIn() {
+    protected String checkIn() {
         return "Priority check-in, security, and boarding";
     }
 
-    public String lounge() {
+    protected String lounge() {
         return "Exclusive lounge access";
     }
 

@@ -15,27 +15,27 @@ public class EconomyClass extends ClassType {
     }
 
     @Override
-    public String seat() {
+    protected String seat() {
         return "Limited recline and legroom.";
     }
 
     @Override
-    public String dinning() {
+    protected String dinning() {
         return "Basic meal and drink, limited selection.";
     }
     
     @Override
-    public String entertainment() {
+    protected String entertainment() {
         return "Personal or shared screens with movies, music, and games.";
     }
 
     @Override
-    public String baggage() {
+    protected String baggage() {
         return "Limited baggage allowance, additional fees for extra bags.";
     }
 
     @Override
-    public String customerSupport() {
+    protected String customerSupport() {
         return "Standard assistance from flight attendants.";
     }
 
