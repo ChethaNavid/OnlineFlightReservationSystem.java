@@ -128,6 +128,14 @@ public class Schedule {
         return destination;
     }
 
+    public String getAirlineName() {
+        return this.airlineName;
+    }
+
+    public String getFlightNumber() {
+        return this.flightNumber;
+    }
+
     public Date getDate() {
         return date;
     }

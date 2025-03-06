@@ -34,7 +34,7 @@ public class Ticket {
         return payments.getPaymentId(); 
     }
 
-    public int getAirplaneCode(Schedule schedules) { 
+    public String getAirplaneCode(Schedule schedules) { 
         return schedules.getFlightNumber();
     }
 

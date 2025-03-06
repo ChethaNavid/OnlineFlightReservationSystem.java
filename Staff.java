@@ -54,6 +54,6 @@ public class Staff extends User {
         if (getClass() != obj.getClass())
             return false;
         Staff other = (Staff) obj;
-        return staffId == other.staffId;
+        return staffID == other.staffID;
     }
 }
