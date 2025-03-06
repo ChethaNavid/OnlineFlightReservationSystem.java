@@ -1,69 +1,53 @@
+import java.sql.Date;
 import java.util.ArrayList;
 
 public class Ticket {
-    private String passengerId;
-    private String paymentId;
-    private String airplaneCode;
-    private String dateOfJourney; // YYYY-MM-DD
-    private int seatNum;
-    private String destination;
-    private String source;
-    private String dateOfBuyingTicket;
-    private String airlineName;
+    Passenger passengers;
+    Payment payments;
+    Schedule schedules;
+    ClassType classT;
+    private Date dateOfJourney; // YYYY-MM-DD
+    private Date dateOfBuyingTicket;
     private int ticketId;
     
     private static int totalTickets = 0;
     private static ArrayList<Ticket> ticketList = new ArrayList<>(); // Store all tickets
 
-    public Ticket(String passId, String payment, String planeCode, String doj, int sn, String to, String from, String dobt, String airName) {
-        this.passengerId = passId;
-        this.paymentId = payment;
-        this.airplaneCode = planeCode;
+    public Ticket(Passenger passengers, Payment payments, Schedule schedules, Date doj, /* String to, String from, */ Date dobt) {
+        this.passengers = passengers;
+        this.payments = payments;
+        this.schedules = schedules;
         this.dateOfJourney = doj;
-        this.seatNum = sn;
-        this.destination = to;
-        this.source = from;
         this.dateOfBuyingTicket = dobt;
-        this.airlineName = airName;
 
         this.ticketId = ++totalTickets;
         ticketList.add(this); // Add ticket to list
     }
 
-    public String getPassengerId() { 
-        return passengerId; 
+    public Ticket() {}
+
+    public int getPassengerId(Passenger passenger) { 
+        return passenger.getId(); 
     }
 
-    public String getPaymentId() { 
-        return paymentId; 
+    public String getPaymentId(Payment payments) { 
+        return payments.getPaymentId(); 
     }
 
-    public String getAirplaneCode() { 
-        return airplaneCode; 
+    public int getAirplaneCode(Schedule schedules) { 
+        return schedules.getFlightNumber();
     }
 
-    public String getDateOfJourney() { 
+    public Date getDateOfJourney() { 
         return dateOfJourney; 
     }
 
-    public int getSeatNum() { 
-        return seatNum; 
-    }
-
-    public String getDestination() { 
-        return destination; 
-    }
-
-    public String getSource() { 
-        return source; 
-    }
-
-    public String getDateOfBuyingTicket() { 
+    public Date getDateOfBuyingTicket() { 
         return dateOfBuyingTicket; 
     }
 
-    public String getAirlineName() { 
-        return airlineName; 
+    public String getAirlineName(Schedule schedules) { 
+        return schedules.getAirlineName(); 
     }
 
     public int getTicketId() { 
@@ -78,32 +62,47 @@ public class Ticket {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (!super.equals(obj))
+        if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Ticket other = (Ticket) obj;
-        return ticketId == other.ticketId;
+        return true;
     }
 
     public void newTicket(){
         System.out.println("New ticket created successfully.");
     }
 
-    public void deleteTicket(){
-        System.out.println("Ticket deleted successfully.");
-    }
+    public void deleteTicket(int ticketId){
+        for (Ticket ticket : ticketList) {
+            if (ticket.getTicketId() == ticketId) {
+                ticketList.remove(ticket);
+                totalTickets--;
+                System.out.println("Ticket with ID " + ticketId + " deleted successfully.");
+                return;
+            }
+        }
+        System.out.println("Ticket with ID " + ticketId + " not found.");
+    }    
 
     public static int getTotalTickets() {
         return totalTickets;
     }
 
-    @Override
-    public String toString() {
-        return "Ticket [passengerId=" + passengerId + ", airplaneCode=" + airplaneCode + ", dateOfJourney="
-                + dateOfJourney + ", seatNum=" + seatNum + ", destination=" + destination + ", source=" + source
-                + ", dateOfBuyingTicket=" + dateOfBuyingTicket + ", airlineName=" + airlineName + ", ticketId="
-                + ticketId + "]";
+    public String destination(Schedule schedule) {
+        return schedule.getDestination();
     }
 
+    @Override
+    public String toString() {
+        return "Ticket [" + "Ticket ID: " + getTicketId() + ", Airline Name: " + schedules.getAirlineName() +
+        ", Flight Number: " + schedules.getFlightNumber() + 
+        ", Source: " + schedules.getSource() + ", Destination: " + schedules.getDestination() + 
+        ", Date of Journey: " + schedules.getDate() + ", Passenger ID: " + passengers.getId() +
+        "Class: " + passengers.getClass() + ", Date of buying ticket: " + getDateOfBuyingTicket() +
+        ", Payment ID: " + payments.getPaymentId() +
+         "]";
+    }
+
+    
 }

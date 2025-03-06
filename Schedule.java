@@ -1,8 +1,8 @@
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.nio.file.Paths;
 import java.util.Scanner;
-import java.text.SimpleDateFormat;
 
 public class Schedule {
     private String scheduleID;

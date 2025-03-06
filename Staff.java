@@ -17,7 +17,7 @@ public class Staff extends User {
         this.position = position;
     }
 
-    public String getPosition(){
+    public String getPosition() {
         return position;
     }
 
@@ -31,8 +31,12 @@ public class Staff extends User {
     
     @Override
     public void register() {
-        // TODO Auto-generated method stub
         super.register();
+    }
+
+    @Override
+    public void login() {
+        super.login();
     }
 
     @Override
@@ -43,25 +47,13 @@ public class Staff extends User {
 
     @Override
     public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
-        return super.equals(obj);
-    }
-
-    @Override
-    public void login() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("Enter email: ");
-            String enteredEmail = scanner.nextLine();
-            System.out.print("Enter password: ");
-            String enteredPassword = scanner.nextLine();
-
-            if (this.email.equals(enteredEmail) && this.password.equals(enteredPassword)) {
-                System.out.println("Login successful! Welcome, " + this.name);
-                
-            } else {
-                System.out.println("Login failed! Incorrect username or password.");
-                
-            }
-        }
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Staff other = (Staff) obj;
+        return staffId == other.staffId;
     }
 }
