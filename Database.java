@@ -20,7 +20,6 @@ public class Database {
 
             // Insert a new passenger
             insertPassenger(connection);
-
             // Fetch and display updated passengers list
             users = fetchPassengers(connection);
             System.out.println("\n===== Updated Passengers =====");
