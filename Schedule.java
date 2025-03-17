@@ -142,7 +142,7 @@ public class Schedule {
 
     public static void main(String[] args) {
         readSchedulesFromFile();
-        /* checkFlightsByDate("12-12-2021"); // Example usage of checkFlightsByDate
-        checkFlightDetails("Phnom Penh", "Bangkok"); // Example usage of checkFlightDetails */
+        checkFlightsByDate("12-12-2021"); // Example usage of checkFlightsByDate
+        checkFlightDetails("Phnom Penh", "Seoul"); // Example usage of checkFlightDetails
     }
 }

@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Staff extends User {
     private static int totalStaff = 0;
     private int staffID;
@@ -28,15 +26,10 @@ public class Staff extends User {
     public static int getTotalStaff() {
         return totalStaff;
     }
-    
-    @Override
-    public void register() {
-        super.register();
-    }
 
     @Override
-    public void login() {
-        super.login();
+    public boolean login() {
+        return super.login();
     }
 
     @Override
