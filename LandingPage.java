@@ -6,6 +6,7 @@ import javax.swing.*;
 public class LandingPage extends JPanel implements ActionListener {
     JButton signInButton;
     JButton signUpButton;
+    JButton historyButton;
     JPanel buttonPanel;
     JPanel logoPanel;
 
@@ -39,9 +40,11 @@ public class LandingPage extends JPanel implements ActionListener {
         
         signInButton = new JButton("Sign In");
         signUpButton = new JButton("Sign Up");
+        historyButton = new JButton("History");
 
         buttonPanel.add(signInButton);
         buttonPanel.add(signUpButton);
+        buttonPanel.add(historyButton);
 
         this.add(buttonPanel);
         this.add(logoPanel);
@@ -51,6 +54,9 @@ public class LandingPage extends JPanel implements ActionListener {
         });
         signUpButton.addActionListener(e -> {
             cardLayout.show(parentPanel, "SignUpPage");
+        });
+        historyButton.addActionListener(e -> {
+            cardLayout.show(parentPanel, "HistoryPage");
         });
     }
 

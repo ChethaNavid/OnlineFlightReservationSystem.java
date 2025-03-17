@@ -20,11 +20,13 @@ public class MyFrame extends JFrame{
         LandingPage landingPage = new LandingPage(mainPanel, cardLayout);
         SignUpPage signUp = new SignUpPage(mainPanel, cardLayout);
         LoginPage signIn = new LoginPage(mainPanel, cardLayout);
+        HistoryPage history = new HistoryPage(mainPanel, cardLayout);
 
         mainPanel.add(landingPage, "LandingPage");
         mainPanel.add(signUp, "SignUpPage");
         mainPanel.add(signIn, "SignInPage");
-
+        mainPanel.add(history, "HistoryPage");
+        
         this.add(mainPanel);
 
         cardLayout.show(mainPanel, "LandingPage");

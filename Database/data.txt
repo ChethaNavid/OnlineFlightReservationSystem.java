@@ -1,3 +1,4 @@
+ID      Name      Gender    Phone                   Email                   Password        
 ID:1,Name:Navid,Gender:M,Phone:061521512,Email:navidchetha@gmail.com,Password:@Vid123,Passport:A18b100265
 ID:1,Name:Alice,Gender:F,Phone:085647514,Email:alice@gmail.com,Password:@alice123,Position:Cashier
 ID:2,Name:Navin,Gender:M,Phone:012587865,Email:navinchetha@gmail.com,Password:@Vin123,Passport:A18b100152
