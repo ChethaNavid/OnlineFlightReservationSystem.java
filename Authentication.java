@@ -1,4 +1,4 @@
 public interface Authentication {
-    public void login();
-    public void register();
+    public boolean login();
+    public boolean register();
 }
