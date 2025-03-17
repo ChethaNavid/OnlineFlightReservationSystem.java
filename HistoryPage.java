@@ -1,3 +1,5 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -5,23 +7,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 public class HistoryPage extends JPanel implements ActionListener {
-    JPanel logoPanel;
-    JPanel buttonPanel;
-    JPanel backButtonPanel;
-    JButton backButton;
-    JPanel parentPanel;  // Reference to parent panel
-    CardLayout cardLayout;
+    private JPanel logoPanel;
+    private JPanel buttonPanel;
+    private JPanel backButtonPanel;
+    private JButton backButton;
+    private JPanel parentPanel;  // Reference to parent panel
+    private CardLayout cardLayout;
 
     private static final String URL = "jdbc:mysql://localhost:3306/flight_reservation_system";
     private static final String USER = "root";
     private static final String PASSWORD = "ROTH250305#"; // ⚠️ Consider using environment variables for security
 
-    // User class definition (assumed, since it wasn’t provided)
+    // User class definition
     public static class User {
         private int id;
         private String name, sex, email, flightNumber, airlineName, source, className;
@@ -49,15 +49,14 @@ public class HistoryPage extends JPanel implements ActionListener {
 
         @Override
         public String toString() {
-            return "User{id=" + id + ", name=" + name + ", sex=" + sex + ", email=" + email + 
-                   ", flight=" + flightNumber + ", airline=" + airlineName + ", source=" + source + 
-                   ", class=" + className + "}";
+            return String.format("User{id=%d, name=%s, sex=%s, email=%s, flight=%s, airline=%s, source=%s, class=%s}",
+                    id, name, sex, email, flightNumber, airlineName, source, className);
         }
     }
 
     private static ArrayList<User> showHistory(Connection connection) {
         ArrayList<User> users = new ArrayList<>();
-        String query = "SELECT * FROM passenger";
+        String query = "SELECT * FROM history"; // Query the view instead of the table
 
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
@@ -73,7 +72,7 @@ public class HistoryPage extends JPanel implements ActionListener {
                 String className = resultSet.getString("class_name").trim();
 
                 User user = new User(id, name, sex, email, flightNumber, airlineName, source, className);
-                users.add(user); // Add user to the list
+                users.add(user);
             }
 
         } catch (SQLException e) {
@@ -102,7 +101,7 @@ public class HistoryPage extends JPanel implements ActionListener {
         Image scaledImage = image.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(scaledImage);
 
-        // 🔹 Logo Panel
+        // Logo Panel
         logoPanel = new JPanel();
         logoPanel.setBackground(Color.WHITE);
         logoPanel.setBounds(40, 50, 400, 60);
@@ -118,6 +117,8 @@ public class HistoryPage extends JPanel implements ActionListener {
         JLabel historyLabel = new JLabel("History Page", JLabel.CENTER);
         historyLabel.setBounds(40, 120, 400, 60);
         historyLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        historyLabel.setHorizontalTextPosition(JLabel.RIGHT);
+        historyLabel.setVerticalTextPosition(JLabel.CENTER);
 
         // Display history in a JTable
         buttonPanel = new JPanel();
@@ -139,12 +140,25 @@ public class HistoryPage extends JPanel implements ActionListener {
             }
             historyTable = new JTable(data, columnNames);
             historyTable.setFillsViewportHeight(true);
+            historyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Disable auto-resize to allow scrolling
+            // Set preferred column widths to ensure visibility of full data
+            historyTable.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+            historyTable.getColumnModel().getColumn(1).setPreferredWidth(100); // Name
+            historyTable.getColumnModel().getColumn(2).setPreferredWidth(50);  // Sex
+            historyTable.getColumnModel().getColumn(3).setPreferredWidth(200); // Email (longer)
+            historyTable.getColumnModel().getColumn(4).setPreferredWidth(80);  // Flight
+            historyTable.getColumnModel().getColumn(5).setPreferredWidth(100); // Airline
+            historyTable.getColumnModel().getColumn(6).setPreferredWidth(100); // Source
+            historyTable.getColumnModel().getColumn(7).setPreferredWidth(80);  // Class
         } catch (SQLException e) {
             System.err.println("Database error: " + e.getMessage());
             historyTable = new JTable(new Object[0][0], columnNames); // Empty table on error
+            historyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Consistent behavior
         }
 
         JScrollPane scrollPane = new JScrollPane(historyTable);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); // Enable horizontal scrolling
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);   // Enable vertical scrolling
         buttonPanel.add(scrollPane, BorderLayout.CENTER);
 
         backButtonPanel.add(backButton);
@@ -153,7 +167,7 @@ public class HistoryPage extends JPanel implements ActionListener {
         this.add(logoPanel);
         this.add(historyLabel);
         this.add(buttonPanel);
-        this.add(backButtonPanel); // Only added once
+        this.add(backButtonPanel);
     }
 
     @Override
