@@ -1,5 +1,3 @@
-
-// --- Payment Class ---
 public class Payment {
     private String paymentId;
     private String userId;
@@ -27,20 +25,27 @@ public class Payment {
     }
 
     public void processPayment() {
-        if (paymentStatus.equalsIgnoreCase("Pending")) {
-            paymentStatus = "Completed";
-            System.out.println("Payment processed successfully.");
-        } else {
-            System.out.println("Payment is already " + paymentStatus + ".");
+        try {
+            if (paymentStatus.equalsIgnoreCase("Pending")) {
+                paymentStatus = "Completed";
+                System.out.println("Payment processed successfully.");
+            } else {
+                throw new IllegalStateException("Payment is already " + paymentStatus + ".");
+            }
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
         }
-    }
-
-    public void displayPayment() {
-        System.out.println(this.toString());
     }
 
     public Payment(String paymentId, String userId, String reservationId,
                    double amount, String paymentDate, String paymentStatus) {
+        if (paymentId == null || userId == null || reservationId == null || paymentDate == null || paymentStatus == null) {
+            throw new IllegalArgumentException("Payment details cannot be null.");
+        }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero.");
+        }
+        
         this.paymentId = paymentId;
         this.userId = userId;
         this.reservationId = reservationId;
@@ -74,8 +79,15 @@ public class Payment {
     }
 
     public void displayIfUserIdMatches(String inputUserId) {
-        if (this.userId.equals(inputUserId)) {
-            displayPayment();
+        try {
+            if (inputUserId == null) {
+                throw new IllegalArgumentException("User ID cannot be null.");
+            }
+            if (this.userId.equals(inputUserId)) {
+                System.out.println(this);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
