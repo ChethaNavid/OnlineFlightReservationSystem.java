@@ -78,6 +78,6 @@ public class Main {
         // FirstClass firstClass = new FirstClass(1500);
         // System.out.println(firstClass);
 
-
+            Schedule.getAllFlights();
     }
 }
