@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-=======
-// --- Payment Class ---
->>>>>>> Stashed changes
 public class Payment {
     private String paymentId;
     private String userId;
@@ -13,25 +9,19 @@ public class Payment {
     // Constructor with exception handling
     public Payment(String paymentId, String userId, String reservationId,
                    double amount, String paymentDate, String paymentStatus) {
-        try {
-            if (paymentId == null || paymentId.trim().isEmpty()) {
-                throw new IllegalArgumentException("Payment ID cannot be null or empty.");
-            }
-            if (amount < 0) {
-                throw new IllegalArgumentException("Amount cannot be negative.");
-            }
-            this.paymentId = paymentId;
-            this.userId = userId;
-            this.reservationId = reservationId;
-            this.amount = amount;
-            this.paymentDate = paymentDate;
-            this.paymentStatus = paymentStatus;
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid payment details: " + e.getMessage());
-        } finally {
-            // Optional: Log the creation attempt if needed
-            System.out.println("Payment object creation attempted.");
+        if (paymentId == null || userId == null || reservationId == null || paymentDate == null || paymentStatus == null) {
+            throw new IllegalArgumentException("Payment details cannot be null.");
         }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero.");
+        }
+        
+        this.paymentId = paymentId;
+        this.userId = userId;
+        this.reservationId = reservationId;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+        this.paymentStatus = paymentStatus;
     }
 
     @Override
@@ -65,39 +55,6 @@ public class Payment {
         }
     }
 
-<<<<<<< Updated upstream
-    public Payment(String paymentId, String userId, String reservationId,
-                   double amount, String paymentDate, String paymentStatus) {
-        if (paymentId == null || userId == null || reservationId == null || paymentDate == null || paymentStatus == null) {
-            throw new IllegalArgumentException("Payment details cannot be null.");
-        }
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than zero.");
-        }
-        
-        this.paymentId = paymentId;
-        this.userId = userId;
-        this.reservationId = reservationId;
-        this.amount = amount;
-        this.paymentDate = paymentDate;
-        this.paymentStatus = paymentStatus;
-=======
-    public void displayPayment() {
-        System.out.println(this.toString());
-    }
-
-    // Updated method with exception handling
-    public void displayIfUserIdMatches(String inputUserId) {
-        try {
-            if (this.userId.equals(inputUserId)) {
-                displayPayment();
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Error: User ID is null.");
-        }
->>>>>>> Stashed changes
-    }
-
     // Getters remain unchanged
     public String getPaymentId() {
         return paymentId;
@@ -122,7 +79,6 @@ public class Payment {
     public String getPaymentStatus() {
         return paymentStatus;
     }
-<<<<<<< Updated upstream
 
     public void displayIfUserIdMatches(String inputUserId) {
         try {
@@ -137,6 +93,3 @@ public class Payment {
         }
     }
 }
-=======
-}
->>>>>>> Stashed changes
