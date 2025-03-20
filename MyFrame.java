@@ -17,15 +17,19 @@ public class MyFrame extends JFrame{
         CardLayout cardLayout = new CardLayout();
         JPanel mainPanel = new JPanel(cardLayout);
 
-        LandingPage landingPage = new LandingPage(mainPanel, cardLayout);
         SignUpPage signUp = new SignUpPage(mainPanel, cardLayout);
         LoginPage signIn = new LoginPage(mainPanel, cardLayout);
         HistoryPage history = new HistoryPage(mainPanel, cardLayout);
+        FlightSearchResults search = new FlightSearchResults(mainPanel, cardLayout);
+        LandingPage landingPage = new LandingPage(mainPanel, cardLayout, search);
+        ViewAllFlight viewAllFlight = new ViewAllFlight(mainPanel, cardLayout);
 
         mainPanel.add(landingPage, "LandingPage");
         mainPanel.add(signUp, "SignUpPage");
         mainPanel.add(signIn, "SignInPage");
         mainPanel.add(history, "HistoryPage");
+        mainPanel.add(search, "SearchResults");
+        mainPanel.add(viewAllFlight, "DisplayAllFlight");
         
         this.add(mainPanel);
 

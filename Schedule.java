@@ -1,11 +1,16 @@
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 public class Schedule {
-    private String scheduleID;
+    private int scheduleID;
     private String flightNumber;
     private String airlineName;
     private String source;
@@ -13,10 +18,23 @@ public class Schedule {
     private String departureTime;
     private String arrivalTime;
     private Date date;
+    private static int totalFlight = 0;
     private static ArrayList<Schedule> schedules = new ArrayList<>();
 
     // Constructor
-    public Schedule(String scheduleID, String flightNumber, String airlineName, String source, String destination, 
+    public Schedule(String flightNumber, String airlineName, String source, String destination, 
+                    String departureTime, String arrivalTime, Date date) {
+        this.scheduleID = ++totalFlight;
+        this.flightNumber = flightNumber;
+        this.airlineName = airlineName;
+        this.source = source;
+        this.destination = destination;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.date = date;
+    }
+
+    public Schedule(int scheduleID, String flightNumber, String airlineName, String source, String destination, 
                     String departureTime, String arrivalTime, Date date) {
         this.scheduleID = scheduleID;
         this.flightNumber = flightNumber;
@@ -61,7 +79,7 @@ public class Schedule {
                     continue; // Skip this entry if the date is invalid
                 }
 
-                Schedule schedule = new Schedule(scheduleID, flightNumber, airlineName, source, destination, 
+                Schedule schedule = new Schedule(flightNumber, airlineName, source, destination, 
                                                  departureTime, arrivalTime, date);
                 schedules.add(schedule);
             }
@@ -120,12 +138,15 @@ public class Schedule {
     }
 
     // ✅ Getters
+    public int getFlightID() {
+        return this.scheduleID;
+    }
     public String getSource() {
-        return source;
+        return this.source;
     }
 
     public String getDestination() {
-        return destination;
+        return this.destination;
     }
 
     public String getAirlineName() {
@@ -136,13 +157,47 @@ public class Schedule {
         return this.flightNumber;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDepartureTime() {
+        return this.departureTime;
     }
 
-    public static void main(String[] args) {
-        readSchedulesFromFile();
-        checkFlightsByDate("12-12-2021"); // Example usage of checkFlightsByDate
-        checkFlightDetails("Phnom Penh", "Seoul"); // Example usage of checkFlightDetails
+    public String getArrivalTime() {
+        return this.arrivalTime;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    private static Connection connect() throws SQLException {
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/flight_reservation_system", "root", "@Vid/1105.dev");
+    }
+
+    public static ArrayList<Schedule> getAllFlights() {
+        ArrayList<Schedule> schedules = new ArrayList<>();
+        String sql = "SELECT * FROM Schedule";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                int flightID = rs.getInt("schedule_id");
+                String flightNo = rs.getString("flight_number");
+                String airline = rs.getString("airline_name");
+                String source = rs.getString("source");
+                String destination = rs.getString("destination");
+                String departureTime = rs.getString("departure_time");
+                String arrivalTime = rs.getString("arrival_time");
+                Date date = rs.getDate("date");
+
+                // Create Schedule object and add to list
+                schedules.add(new Schedule(flightID, flightNo, airline, source, destination, departureTime, arrivalTime, date));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();  // Print SQL error details
+        }
+        return schedules;
+        
     }
 }

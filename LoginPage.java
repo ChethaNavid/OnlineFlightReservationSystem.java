@@ -102,11 +102,16 @@ public class LoginPage extends JPanel implements ActionListener {
             String email = emailField.getText();
             String password = new String(passField.getPassword()); // Convert char[] to String
 
-            User passenger = new Passenger(email, password);
-            boolean success = passenger.login();
+            User users = new User(email, password);
+            boolean success = users.login();
 
             if(success) {
-                cardLayout.show(parentPanel, "LandingPage");
+                if(User.currentUser instanceof Passenger) {
+                    cardLayout.show(parentPanel, "LandingPage");
+                } else if(User.currentUser instanceof Staff) {
+                    new StuffPage();
+                }
+                
             }
         }
     }

@@ -9,6 +9,10 @@ public class Staff extends User {
         this.position = position;
     }
 
+    public Staff(String name, String email, String password) {
+        super(name, email, password);
+    }
+
     public Staff(int staffID, String name, String sex, String position, String phone, String email, String password) {
         super(name, sex, phone, email, password);
         this.staffID = staffID;
