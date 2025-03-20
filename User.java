@@ -19,6 +19,11 @@ public class User implements Authentication {
         this.password = password;
     }
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public User() {}
 
     public String getName() {
@@ -30,22 +35,24 @@ public class User implements Authentication {
     }
 
     @Override
-    public void login() {
+    public boolean login() {
         if (usersDatabase.containsKey(email) && usersDatabase.get(email).equals(password)) {
             System.out.println("Login successful for: " + name);
         } else {
             System.out.println("Invalid email or password.");
         }
+        return true;
     }
 
     @Override
-    public void register() {
+    public boolean register() {
         if (isValidEmail(email) && isValidPassword(password)) {
             usersDatabase.put(email, password);
             System.out.println("User registered successfully: " + name);
         } else {
             System.out.println("Invalid email or password format.");
         }
+        return true;
     }
 
     private boolean isValidEmail(String email) {
