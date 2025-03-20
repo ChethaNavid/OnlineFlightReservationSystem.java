@@ -23,34 +23,34 @@ public class HistoryPage extends JPanel implements ActionListener {
 
     // User class definition
     public static class User {
-        private int id;
-        private String name, sex, email, flightNumber, airlineName, source, className;
+        private String name, email, flightNumber, airlineName, seat, source, destination, className;
 
-        public User(int id, String name, String sex, String email, String flightNumber, 
-                    String airlineName, String source, String className) {
-            this.id = id;
+        public User(String name, String email, String flightNumber, 
+                    String airlineName, String seat, String source,
+                    String destination, String className) {
             this.name = name;
-            this.sex = sex;
             this.email = email;
             this.flightNumber = flightNumber;
             this.airlineName = airlineName;
+            this.seat = seat;
             this.source = source;
+            this.destination = destination;
             this.className = className;
         }
 
-        public int getId() { return id; }
         public String getName() { return name; }
-        public String getSex() { return sex; }
         public String getEmail() { return email; }
         public String getFlightNumber() { return flightNumber; }
         public String getAirlineName() { return airlineName; }
+        public String getSeat() { return seat; }
         public String getSource() { return source; }
+        public String getDestination() { return destination; }
         public String getClassName() { return className; }
 
         @Override
         public String toString() {
             return String.format("User{id=%d, name=%s, sex=%s, email=%s, flight=%s, airline=%s, source=%s, class=%s}",
-                    id, name, sex, email, flightNumber, airlineName, source, className);
+                    name, email, flightNumber, airlineName, seat, source, destination, className);
         }
     }
 
@@ -62,16 +62,16 @@ public class HistoryPage extends JPanel implements ActionListener {
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("passenger_id");
                 String name = resultSet.getString("passenger_name");
-                String sex = resultSet.getString("passenger_sex");
                 String email = resultSet.getString("passenger_email");
                 String flightNumber = resultSet.getString("flight_number");
                 String airlineName = resultSet.getString("airline_name");
+                String seatNumber = resultSet.getString("seat_number");
                 String source = resultSet.getString("source");
+                String destination = resultSet.getString("destination");
                 String className = resultSet.getString("class_name").trim();
 
-                User user = new User(id, name, sex, email, flightNumber, airlineName, source, className);
+                User user = new User(name, email, flightNumber, airlineName, seatNumber, source,destination, className);
                 users.add(user);
             }
 
@@ -126,7 +126,7 @@ public class HistoryPage extends JPanel implements ActionListener {
         buttonPanel.setBounds(40, 180, 400, 300);
         buttonPanel.setLayout(new BorderLayout()); // Changed to BorderLayout for JTable
 
-        String[] columnNames = {"ID", "Name", "Sex", "Email", "Flight", "Airline", "Source", "Class"};
+        String[] columnNames = {"Passenger Name", "passenger Email", "Flight Number", "Airline Name", "Seat Number", "Source", "Destination", "Class Name"};
         JTable historyTable;
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             ArrayList<User> users = showHistory(connection);
@@ -134,22 +134,23 @@ public class HistoryPage extends JPanel implements ActionListener {
             for (int i = 0; i < users.size(); i++) {
                 User user = users.get(i);
                 data[i] = new Object[]{
-                    user.getId(), user.getName(), user.getSex(), user.getEmail(),
-                    user.getFlightNumber(), user.getAirlineName(), user.getSource(), user.getClassName()
+                    user.getName(), user.getEmail(),
+                    user.getFlightNumber(), user.getAirlineName(),
+                    user.getSeat(), user.getSource(), user.getDestination(), user.getClassName()
                 };
             }
             historyTable = new JTable(data, columnNames);
             historyTable.setFillsViewportHeight(true);
             historyTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Disable auto-resize to allow scrolling
             // Set preferred column widths to ensure visibility of full data
-            historyTable.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
-            historyTable.getColumnModel().getColumn(1).setPreferredWidth(100); // Name
-            historyTable.getColumnModel().getColumn(2).setPreferredWidth(50);  // Sex
-            historyTable.getColumnModel().getColumn(3).setPreferredWidth(200); // Email (longer)
-            historyTable.getColumnModel().getColumn(4).setPreferredWidth(80);  // Flight
+            historyTable.getColumnModel().getColumn(0).setPreferredWidth(100);  // ID
+            historyTable.getColumnModel().getColumn(1).setPreferredWidth(200); // Name
+            historyTable.getColumnModel().getColumn(2).setPreferredWidth(60);  // Sex
+            historyTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Email (longer)
+            historyTable.getColumnModel().getColumn(4).setPreferredWidth(60);  // Flight
             historyTable.getColumnModel().getColumn(5).setPreferredWidth(100); // Airline
             historyTable.getColumnModel().getColumn(6).setPreferredWidth(100); // Source
-            historyTable.getColumnModel().getColumn(7).setPreferredWidth(80);  // Class
+            historyTable.getColumnModel().getColumn(7).setPreferredWidth(100);  // Class
         } catch (SQLException e) {
             System.err.println("Database error: " + e.getMessage());
             historyTable = new JTable(new Object[0][0], columnNames); // Empty table on error
