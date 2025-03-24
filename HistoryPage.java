@@ -19,7 +19,7 @@ public class HistoryPage extends JPanel implements ActionListener {
 
     private static final String URL = "jdbc:mysql://localhost:3306/flight_reservation_system";
     private static final String USER = "root";
-    private static final String PASSWORD = "ROTH250305#"; // ⚠️ Consider using environment variables for security
+    private static final String PASSWORD = "@Vid/1105.dev"; // ⚠️ Consider using environment variables for security
 
     // User class definition
     public static class User {

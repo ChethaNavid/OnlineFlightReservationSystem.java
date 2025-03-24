@@ -1,5 +1,8 @@
 import java.awt.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -7,7 +10,7 @@ public class StuffPage {
     private JFrame frame;
     private JTable table;
     private DefaultTableModel model;
-    private JTextField flightNumberField, airlineNameField, sourceField, destinationField, departureField, arrivalField, dateField;
+    private JTextField flightNumberField, airlineNameField, sourceField, destinationField, departureField, arrivalField, dateField, classTypeField;
 
     public StuffPage() {
         frame = new JFrame("Airline Management System");
@@ -17,10 +20,10 @@ public class StuffPage {
 
         model = new DefaultTableModel();
         table = new JTable(model);
-        model.setColumnIdentifiers(new String[]{"Flight No", "Airline", "Source", "Destination", "Departure", "Arrival", "Date"});
+        model.setColumnIdentifiers(new String[]{"Flight No", "Airline", "Source", "Destination", "Departure", "Arrival", "Date", "Class"});
         loadFlights();
 
-        JPanel panel = new JPanel(new GridLayout(7, 2));
+        JPanel panel = new JPanel(new GridLayout(8, 2));
 
         panel.add(new JLabel("Flight No:"));
         flightNumberField = new JTextField();
@@ -50,6 +53,10 @@ public class StuffPage {
         dateField = new JTextField();
         panel.add(dateField);
 
+        panel.add(new JLabel("Class Type"));
+        classTypeField = new JTextField();
+        panel.add(classTypeField);
+
         JPanel buttonPanel = new JPanel();
         JButton addButton = new JButton("Add");
         JButton updateButton = new JButton("Update");
@@ -69,6 +76,7 @@ public class StuffPage {
         frame.add(panel, BorderLayout.NORTH);
         frame.add(buttonPanel, BorderLayout.SOUTH);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
     private Connection connect() throws SQLException {
@@ -86,7 +94,8 @@ public class StuffPage {
                     rs.getString("destination"),
                     rs.getString("departure_time"),
                     rs.getString("arrival_time"),
-                    rs.getDate("date")
+                    rs.getDate("date"),
+                    rs.getString("class_type")
                 });
             }
         } catch (SQLException e) {
@@ -95,35 +104,71 @@ public class StuffPage {
     }
 
     private void addFlight() {
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Schedule (flight_number, airline_name, source, destination, departure_time, arrival_time, date) VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = connect(); 
+             PreparedStatement pstmt = conn.prepareStatement(
+                 "INSERT INTO Schedule (flight_number, airline_name, source, destination, departure_time, arrival_time, date, class_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+                 Statement.RETURN_GENERATED_KEYS)) {
+    
             pstmt.setString(1, flightNumberField.getText());
             pstmt.setString(2, airlineNameField.getText());
             pstmt.setString(3, sourceField.getText());
             pstmt.setString(4, destinationField.getText());
             pstmt.setString(5, departureField.getText());
             pstmt.setString(6, arrivalField.getText());
-            pstmt.setDate(7, Date.valueOf(dateField.getText()));
-            pstmt.executeUpdate();
-            loadFlights();
+    
+            try {
+                LocalDate date = LocalDate.parse(dateField.getText()); 
+    
+                new DateException(date); 
+    
+                pstmt.setDate(7, java.sql.Date.valueOf(date));
+                pstmt.setString(8, classTypeField.getText());
+                pstmt.executeUpdate(); 
+                loadFlights(); // Refresh the flight list
+    
+            } catch (DateTimeParseException e) {
+                
+                JOptionPane.showMessageDialog(null, "Invalid date format! Please enter the date in yyyy-MM-dd format.", "Date Error", JOptionPane.ERROR_MESSAGE);
+            } catch (DateException e) {
+                
+                JOptionPane.showMessageDialog(null, "Invalid Date: " + e.getMessage(), "Date Error", JOptionPane.ERROR_MESSAGE);
+            }
+    
         } catch (SQLException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "SQL Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
 
     private void updateFlight() {
-        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement("UPDATE Schedule SET airline_name=?, source=?, destination=?, departure_time=?, arrival_time=?, date=? WHERE flight_number=?")) {
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement("UPDATE Schedule SET airline_name=?, source=?, destination=?, departure_time=?, arrival_time=?, date=?, class_type=? WHERE flight_number=?")) {
             pstmt.setString(1, airlineNameField.getText());
             pstmt.setString(2, sourceField.getText());
             pstmt.setString(3, destinationField.getText());
             pstmt.setString(4, departureField.getText());
             pstmt.setString(5, arrivalField.getText());
-            pstmt.setDate(6, Date.valueOf(dateField.getText()));
-            pstmt.setString(7, flightNumberField.getText());
-            pstmt.executeUpdate();
-            loadFlights();
+
+            try {
+                LocalDate date = LocalDate.parse(dateField.getText()); 
+    
+                new DateException(date); 
+    
+                pstmt.setDate(6, java.sql.Date.valueOf(date));
+                pstmt.setString(7, classTypeField.getText());
+                pstmt.setString(8, flightNumberField.getText());
+                pstmt.executeUpdate(); 
+                loadFlights(); // Refresh the flight list
+    
+            } catch (DateTimeParseException e) {
+                
+                JOptionPane.showMessageDialog(null, "Invalid date format! Please enter the date in yyyy-MM-dd format.", "Date Error", JOptionPane.ERROR_MESSAGE);
+            } catch (DateException e) {
+                
+                JOptionPane.showMessageDialog(null, "Invalid Date: " + e.getMessage(), "Date Error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        } 
     }
 
     private void removeFlight() {
@@ -132,18 +177,47 @@ public class StuffPage {
             JOptionPane.showMessageDialog(frame, "Please select a flight to remove.");
             return;
         }
-
+    
         String flightNumber = (String) model.getValueAt(selectedRow, 0);
         int confirm = JOptionPane.showConfirmDialog(frame, "Are you sure you want to remove Flight No: " + flightNumber + "?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-
+    
         if (confirm == JOptionPane.YES_OPTION) {
-            try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Schedule WHERE flight_number = ?")) {
-                pstmt.setString(1, flightNumber);
-                pstmt.executeUpdate();
-                model.removeRow(selectedRow);
+            try (Connection conn = connect()) {
+                conn.setAutoCommit(false); // Start transaction
+    
+                // Get the schedule_id before deleting
+                int scheduleId = -1;
+                try (PreparedStatement pstmt = conn.prepareStatement("SELECT schedule_id FROM Schedule WHERE flight_number = ?")) {
+                    pstmt.setString(1, flightNumber);
+                    ResultSet rs = pstmt.executeQuery();
+                    if (rs.next()) {
+                        scheduleId = rs.getInt("schedule_id");
+                    }
+                }
+    
+                if (scheduleId != -1) {
+                    // Delete tickets first
+                    try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Ticket WHERE schedule_id = ?")) {
+                        pstmt.setInt(1, scheduleId);
+                        pstmt.executeUpdate();
+                    }
+                    
+                    // Now delete the flight from Schedule
+                    try (PreparedStatement pstmt = conn.prepareStatement("DELETE FROM Schedule WHERE flight_number = ?")) {
+                        pstmt.setString(1, flightNumber);
+                        pstmt.executeUpdate();
+                    }
+                    
+                    conn.commit(); // Commit the transaction
+                    model.removeRow(selectedRow);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Flight not found.");
+                }
+    
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
+    
 }

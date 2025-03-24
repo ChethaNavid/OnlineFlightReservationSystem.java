@@ -1,27 +1,27 @@
 import javax.swing.*;
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class PassengerReceiptGUI {
     private JFrame frame;
     private JPanel mainPanel;
     private Passenger passenger;
+    private Schedule flight; // Added Flight Object
 
-    public PassengerReceiptGUI(Passenger passenger) {
-        if (passenger == null) {
-            throw new IllegalArgumentException("Passenger cannot be null");
+    public PassengerReceiptGUI(Passenger passenger, Schedule flight) {
+        if (passenger == null || flight == null) {
+            throw new IllegalArgumentException("Passenger and Flight cannot be null");
         }
         this.passenger = passenger;
+        this.flight = flight;
         initializeGUI();
     }
 
     private void initializeGUI() {
         frame = new JFrame("Passenger Receipt");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 500);
+        frame.setSize(400, 600);
         frame.setLocationRelativeTo(null);
 
         mainPanel = new JPanel(new BorderLayout(10, 10));
@@ -57,9 +57,10 @@ public class PassengerReceiptGUI {
 
     private JPanel createDetailsPanel() {
         JPanel detailsPanel = new JPanel();
-        detailsPanel.setLayout(new GridLayout(7, 2, 10, 10));
-        detailsPanel.setBorder(BorderFactory.createTitledBorder("Passenger Details"));
+        detailsPanel.setLayout(new GridLayout(14, 2, 0, 0));
+        detailsPanel.setBorder(BorderFactory.createTitledBorder("Passenger & Flight Details"));
 
+        // Passenger Info
         detailsPanel.add(new JLabel("Passenger ID:"));
         detailsPanel.add(new JLabel(String.valueOf(passenger.getId())));
 
@@ -67,13 +68,32 @@ public class PassengerReceiptGUI {
         detailsPanel.add(new JLabel(passenger.getName() != null ? passenger.getName() : "N/A"));
 
         detailsPanel.add(new JLabel("Gender:"));
-       
+        detailsPanel.add(new JLabel(passenger.getGender() != null ? passenger.getGender() : "N/A"));
+
+        detailsPanel.add(new JLabel("Phone Number:"));
+        detailsPanel.add(new JLabel(passenger.getPhone() != null ? passenger.getPhone() : "N/A"));
 
         detailsPanel.add(new JLabel("Passport Number:"));
         detailsPanel.add(new JLabel(passenger.getPassportNum() != null ? passenger.getPassportNum() : "N/A"));
 
-        detailsPanel.add(new JLabel("Total Passengers:"));
-        detailsPanel.add(new JLabel(String.valueOf(Passenger.getTotalPassenger())));
+        // Flight Info
+        detailsPanel.add(new JLabel("Flight Number:"));
+        detailsPanel.add(new JLabel(flight.getFlightNumber()));
+
+        detailsPanel.add(new JLabel("Source:"));
+        detailsPanel.add(new JLabel(flight.getSource()));
+
+        detailsPanel.add(new JLabel("Destination:"));
+        detailsPanel.add(new JLabel(flight.getDestination()));
+
+        detailsPanel.add(new JLabel("Departure Time:"));
+        detailsPanel.add(new JLabel(flight.getDepartureTime()));
+
+        detailsPanel.add(new JLabel("Arrival Time:"));
+        detailsPanel.add(new JLabel(flight.getArrivalTime()));
+
+        detailsPanel.add(new JLabel("Class:"));
+        detailsPanel.add(new JLabel(flight.getClassType()));
 
         return detailsPanel;
     }
@@ -84,67 +104,13 @@ public class PassengerReceiptGUI {
         JButton closeButton = new JButton("Close");
         closeButton.addActionListener(e -> frame.dispose());
 
-        JButton printButton = new JButton("Print");
-        printButton.addActionListener(e -> {
-            // Implement the actual printing logic here if needed
-            JOptionPane.showMessageDialog(frame,
-                "Printing functionality would be implemented here",
-                "Print",
-                JOptionPane.INFORMATION_MESSAGE);
-        });
-
-        footerPanel.add(printButton);
         footerPanel.add(closeButton);
 
         return footerPanel;
     }
 
-    public static void showReceipt(Passenger passenger) {
-        SwingUtilities.invokeLater(() -> new PassengerReceiptGUI(passenger));
-    }
-
-    // Temporary Database helper class (you should replace this with your actual implementation)
-    private static class Database {
-        static ArrayList<Passenger> fetchPassengers(Connection connection) throws SQLException {
-            ArrayList<Passenger> passengers = new ArrayList<>();
-            String sql = "SELECT * FROM Passenger LIMIT 1"; // Fetch first passenger as demo
-            try (PreparedStatement pstmt = connection.prepareStatement(sql);
-                 ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) { // Handle multiple passengers (if needed)
-                    passengers.add(new Passenger(
-                        rs.getInt("passenger_id"),
-                        rs.getString("passenger_name"),
-                        rs.getString("passenger_gender"),
-                        rs.getString("passenger_phone"),
-                        rs.getString("passenger_passport"),
-                        rs.getString("passenger_email"),
-                        rs.getString("passenger_password")
-                    ));
-                }
-            }
-            return passengers;
-        }
-    }
-
-    public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/flight_reservation_system";
-        String user = "root";
-        String password = "Pisey@!#$%^&*1234858483"; // Make sure this is secure
-
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            ArrayList<Passenger> passengers = Database.fetchPassengers(connection);
-
-            if (!passengers.isEmpty()) {
-                showReceipt(passengers.get(0)); // Show the first passenger's receipt
-            } else {
-                System.out.println("No passengers found in the database.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Database error: " + e.getMessage());
-            JOptionPane.showMessageDialog(null,
-                "Failed to connect to database: " + e.getMessage(),
-                "Database Error",
-                JOptionPane.ERROR_MESSAGE);
-        }
+    public static void showReceipt(Passenger passenger, Schedule flight) {
+        SwingUtilities.invokeLater(() -> new PassengerReceiptGUI(passenger, flight));
     }
 }
+

@@ -66,8 +66,12 @@ public class User implements Authentication {
 
             ResultSet passengerRs = passengerStmt.executeQuery();
             if (passengerRs.next()) { // ✅ Check if at least one record exists
+                int passengerID = passengerRs.getInt("passenger_id");
                 String userName = passengerRs.getString("passenger_name");
-                User.currentUser = new Passenger(userName, email, password);
+                String gender = passengerRs.getString("passenger_sex");
+                String phoneNum = passengerRs.getString("passenger_phone");
+                String passport = passengerRs.getString("passport_num");
+                User.currentUser = new Passenger(passengerID, userName, gender, phoneNum, passport);
                 JOptionPane.showMessageDialog(null, "Login Successful! Welcome " + userName, "Success", JOptionPane.INFORMATION_MESSAGE);
                 return true; // ✅ Login successful
             }
@@ -93,23 +97,7 @@ public class User implements Authentication {
 
     @Override
     public boolean register() {
-        if (isValidEmail(email) && isValidPassword(password)) {
-            usersDatabase.put(email, password);
-            System.out.println("User registered successfully: " + name);
-        } else {
-            System.out.println("Invalid email or password format.");
-        }
         return true;
-    }
-
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return Pattern.matches(emailRegex, email);
-    }
-
-    private boolean isValidPassword(String password) {
-        // Password must be at least 8 characters long
-        return password.length() >= 8;
     }
 
     @Override

@@ -151,6 +151,12 @@ public class SignUpPage extends JPanel implements ActionListener {
             boolean success = passenger.register();
 
             if(success) {
+                Component[] components = parentPanel.getComponents();
+                for (Component component : components) {
+                    if (component instanceof LandingPage) {
+                        ((LandingPage) component).userLoggedIn();
+                    }
+                }
                 JOptionPane.showMessageDialog(this, "Sign Up Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 cardLayout.show(parentPanel, "LandingPage");
             } else {

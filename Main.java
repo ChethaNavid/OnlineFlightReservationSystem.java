@@ -12,7 +12,8 @@ public class Main {
 
         User passenger1 = new Passenger("Navid", "M", "061521512", "A18b100265", "navidchetha@gmail.com", "@Vid123");
         User staff1 = new Staff("Alice", "F", "Cashier", "085647514", "alice@gmail.com", "@alice123");
-        User passenger2 = new Passenger("Navin", "M", "012587865", "A18b100152", "navinchetha@gmail.com", "@Vin123");
+        User passenger2 = new Passenger("Navin"
+        , "M", "012587865", "A18b100152", "navinchetha@gmail.com", "@Vin123");
 
         users.add(passenger1);
         users.add(passenger2);
@@ -32,7 +33,9 @@ public class Main {
 
             try {
                 LocalDate date = LocalDate.parse(input, dateFormat);
-                new DateException(date);
+                // Explicitly throw the DateException
+                new DateException(date);  // This will trigger the validation logic in the DateException constructor
+
                 String formattedDate = date.format(dateFormat);
                 System.out.println("Valid date: " + formattedDate);
                 break;
@@ -44,6 +47,7 @@ public class Main {
                 continue; 
             }
         }
+
 
         try {
             System.out.println("Enter your name");
@@ -78,6 +82,5 @@ public class Main {
         // FirstClass firstClass = new FirstClass(1500);
         // System.out.println(firstClass);
 
-            Schedule.getAllFlights();
     }
 }
