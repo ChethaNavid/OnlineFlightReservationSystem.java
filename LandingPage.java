@@ -1,10 +1,12 @@
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 public class LandingPage extends JPanel implements ActionListener {
-    JButton signInButton, signUpButton, historyButton, searchButton, viewButton;
+    JButton signInButton, signUpButton, logOutButton, historyButton, searchButton, viewButton;
     JPanel buttonPanel, logoPanel, headerPanel, formPanel, searchButtonPanel;
     JTextField from, to, date, classType;
     private FlightSearchResults searchResultsPanel; 
@@ -45,8 +47,8 @@ public class LandingPage extends JPanel implements ActionListener {
         headerPanel.setBounds(40, 120, 400, 60);
         headerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        JLabel headerLabel = new JLabel("Book your flight");
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel headerLabel = new JLabel("Search your flight");
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
         headerPanel.add(headerLabel);
 
         // 🔹 Form Panel
@@ -55,33 +57,25 @@ public class LandingPage extends JPanel implements ActionListener {
         formPanel.setBounds(20, 180, 450, 250);
         formPanel.setLayout(new GridLayout(4, 1, 0, 10));
 
-        from = new JTextField();
+        from = placeholderField("Source");
         from.setPreferredSize(new Dimension(300, 30));
         from.setFont(new Font("Arial", Font.PLAIN, 14));
-        from.setBackground(Color.LIGHT_GRAY);
-        from.setForeground(Color.GRAY);
-        from.setText("From");
+        from.setBackground(Color.WHITE);
 
-        to = new JTextField();
+        to = placeholderField("Destination");
         to.setPreferredSize(new Dimension(300, 30));
         to.setFont(new Font("Arial", Font.PLAIN, 14));
-        to.setBackground(Color.LIGHT_GRAY);
-        to.setForeground(Color.GRAY);
-        to.setText("To");
+        to.setBackground(Color.WHITE);
 
-        date = new JTextField();
+        date = placeholderField("Date (yyyy-MM-dd)");
         date.setPreferredSize(new Dimension(300, 30));
         date.setFont(new Font("Arial", Font.PLAIN, 14));
-        date.setBackground(Color.LIGHT_GRAY);
-        date.setForeground(Color.GRAY);
-        date.setText("Date (dd/MM/yyyy)");
+        date.setBackground(Color.WHITE);
 
-        classType = new JTextField();
+        classType = placeholderField("Class");
         classType.setPreferredSize(new Dimension(300, 30));
         classType.setFont(new Font("Arial", Font.PLAIN, 14));
-        classType.setBackground(Color.LIGHT_GRAY);
-        classType.setForeground(Color.GRAY);
-        classType.setText("Class");
+        classType.setBackground(Color.WHITE);
 
         formPanel.add(from);
         formPanel.add(to);
@@ -97,11 +91,15 @@ public class LandingPage extends JPanel implements ActionListener {
         
         signInButton = new JButton("Sign In");
         signUpButton = new JButton("Sign Up");
+        logOutButton = new JButton("Log out");
+        logOutButton.setVisible(false);
         historyButton = new JButton("History");
+        historyButton.setVisible(false);
         viewButton = new JButton("View All Flight");
 
         buttonPanel.add(signInButton);
         buttonPanel.add(signUpButton);
+        buttonPanel.add(logOutButton);
         buttonPanel.add(historyButton);
         buttonPanel.add(viewButton);
 
@@ -116,6 +114,18 @@ public class LandingPage extends JPanel implements ActionListener {
         });
         signUpButton.addActionListener(e -> {
             cardLayout.show(parentPanel, "SignUpPage");
+        });
+        logOutButton.addActionListener(e -> {
+            User.currentUser = null;
+            Component[] components = parentPanel.getComponents();
+            for (Component component : components) {
+                if (component instanceof LandingPage) {
+                    ((LandingPage) component).userLoggedOut();
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Logging out");
+            // Redirect to login screen
+            cardLayout.show(parentPanel, "LandingPage");
         });
         historyButton.addActionListener(e -> {
             cardLayout.show(parentPanel, "HistoryPage");
@@ -139,7 +149,49 @@ public class LandingPage extends JPanel implements ActionListener {
             cardLayout.show(parentPanel, "SearchResults");
         });
     }
+    public void userLoggedIn() {
+        signInButton.setVisible(false);
+        signUpButton.setVisible(false);
+        logOutButton.setVisible(true);
+        historyButton.setVisible(true);
 
+    }
+
+    public void userLoggedOut() {
+        signInButton.setVisible(true);
+        signUpButton.setVisible(true);
+        logOutButton.setVisible(false);
+        historyButton.setVisible(false);
+    }
+
+    private static JTextField placeholderField(String placeholder) {
+        JTextField textField = new JTextField(placeholder);
+        textField.setPreferredSize(new Dimension(300, 30));
+        textField.setFont(new Font("Arial", Font.PLAIN, 14));
+        textField.setBackground(Color.WHITE);
+        textField.setForeground(Color.GRAY); // Placeholder text color
+
+        textField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(placeholder)) {
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK); // Change color when user types
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholder);
+                    textField.setForeground(Color.GRAY); // Set back to placeholder color
+                }
+            }
+        });
+
+        return textField;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         

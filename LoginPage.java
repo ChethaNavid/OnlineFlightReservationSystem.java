@@ -107,8 +107,17 @@ public class LoginPage extends JPanel implements ActionListener {
 
             if(success) {
                 if(User.currentUser instanceof Passenger) {
+                    // Find LandingPage and hide buttons
+                    Component[] components = parentPanel.getComponents();
+                    for (Component component : components) {
+                        if (component instanceof LandingPage) {
+                            ((LandingPage) component).userLoggedIn();
+                        }
+                    }
                     cardLayout.show(parentPanel, "LandingPage");
+                    
                 } else if(User.currentUser instanceof Staff) {
+                    SwingUtilities.getWindowAncestor(loginButton).dispose();
                     new StuffPage();
                 }
                 

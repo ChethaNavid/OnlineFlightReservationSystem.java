@@ -4,12 +4,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import java.sql.*;
+
 
 public class Passenger extends User{
 
     private static int totalPassenger = 0;
     private int passengerID;
     private String passportNum;
+
+    public Passenger() {}
 
     public Passenger(String name, String sex, String phoneNum, String passportNum, String email, String password) {
         super(name, sex, phoneNum, email, password);
@@ -27,6 +31,14 @@ public class Passenger extends User{
         super(name, email, password);
     }
 
+    public Passenger(int passengerID, String name, String sex, String phone, String passportNum) {
+        this.passengerID = passengerID;
+        this.name = name;
+        this.sex = sex;
+        this.phone = phone;
+        this.passportNum = passportNum;
+    }
+
     public Passenger(String email, String password) {
         super(email, password);
     }
@@ -37,6 +49,18 @@ public class Passenger extends User{
 
     public int getId() {
         return this.passengerID;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getGender() {
+        return this.sex;
+    }
+
+    public String getPhone() {
+        return this.phone;
     }
 
     public String getPassportNum() {
@@ -61,8 +85,15 @@ public class Passenger extends User{
         + "Phone:" + this.phone + "," + "Email:" + this.email + "," + "Password:" + this.password + "," + "Passport:" + this.passportNum;
     }
 
-    private Connection connect() throws SQLException {
+    private static Connection connect() throws SQLException {
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/flight_reservation_system", "root", "@Vid/1105.dev");
+    }
+
+    public static Passenger getLoggedInPassenger() {
+        if (User.currentUser instanceof Passenger) {
+            return (Passenger) User.currentUser;
+        }
+        return null;
     }
 
     @Override
@@ -74,7 +105,7 @@ public class Passenger extends User{
     public boolean register() {
         String sql = "INSERT INTO Passenger (passenger_name, passenger_sex, passenger_phone, passenger_email, passenger_password, passport_num) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, this.name);
             pstmt.setString(2, this.sex);
@@ -83,13 +114,22 @@ public class Passenger extends User{
             pstmt.setString(5, this.password);
             pstmt.setString(6, this.passportNum);
 
-            int rowsInserted = pstmt.executeUpdate();
-            return rowsInserted > 0;
+            int rowsInserted = pstmt.executeUpdate(); // ✅ Use executeUpdate() for INSERT
+            if (rowsInserted > 0) { // ✅ Check if insert was successful
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) { // ✅ Retrieve generated ID
+                    if (generatedKeys.next()) {
+                        int passengerID = generatedKeys.getInt(1);
+                        User.currentUser = new Passenger(passengerID, this.name, this.sex, this.phone, this.passportNum);
+                        return true; // ✅ Registration successful
+                    }
+                }
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return false;
+            
         }
+        return false;
          
     }
     
