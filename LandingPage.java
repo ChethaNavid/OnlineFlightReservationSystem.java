@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 
-public class LandingPage extends JPanel implements ActionListener {
+public class LandingPage extends JPanel{
     JButton signInButton, signUpButton, logOutButton, historyButton, searchButton, viewButton;
     JPanel buttonPanel, logoPanel, headerPanel, formPanel, searchButtonPanel;
     JTextField from, to, date, classType;
@@ -109,8 +109,18 @@ public class LandingPage extends JPanel implements ActionListener {
         this.add(formPanel);
         this.add(searchButtonPanel);
 
-        signInButton.addActionListener(e -> {
-            cardLayout.show(parentPanel, "SignInPage");
+        // signInButton.addActionListener(e -> {
+        //     cardLayout.show(parentPanel, "SignInPage");
+        // });
+
+        signInButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(parentPanel, "SignInPage");
+                
+            }
+            
         });
         signUpButton.addActionListener(e -> {
             cardLayout.show(parentPanel, "SignUpPage");
@@ -148,6 +158,7 @@ public class LandingPage extends JPanel implements ActionListener {
             // Switch to SearchResults page
             cardLayout.show(parentPanel, "SearchResults");
         });
+
     }
     public void userLoggedIn() {
         signInButton.setVisible(false);
@@ -191,9 +202,5 @@ public class LandingPage extends JPanel implements ActionListener {
 
         return textField;
     }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-    }
+
 }
